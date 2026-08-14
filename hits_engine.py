@@ -1,6 +1,5 @@
 import statsapi
-from datetime import datetime, timezone
-from zoneinfo import ZoneInfo
+from datetime import datetime, timezone, timedelta
 
 # ==========================================
 # CONFIGURATION TOGGLES & CONSTANTS
@@ -376,7 +375,9 @@ def get_projected_hits_payload(target_date: str) -> dict:
         game_dt_str = game.get('game_datetime', '')
         try:
             dt_utc = datetime.strptime(game_dt_str, '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=timezone.utc)
-            dt_local = dt_utc.astimezone(ZoneInfo('America/Toronto'))
+            # Eastern Daylight Time (EDT) is UTC-4 hours
+            edt_tz = timezone(timedelta(hours=-4))
+            dt_local = dt_utc.astimezone(edt_tz)
             game_time_formatted = dt_local.strftime('%I:%M %p').lstrip('0')
         except Exception:
             game_time_formatted = 'TBD'
