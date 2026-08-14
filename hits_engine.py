@@ -451,12 +451,8 @@ def get_projected_hits_payload(target_date: str) -> dict:
         
         all_games.append(game_dict)
         
-        # 3-Step "KISS" Parlay Criteria Evaluation (v7 Refined Thresholds)
-        both_teams_floor = (game_dict['away_hits'] >= 8.00) and (game_dict['home_hits'] >= 8.00)
-        game_pace_pass = game_dict['total_hits'] >= 16.50
-        model_edge_pass = game_dict['delta'] >= 1.00
-        
-        if both_teams_floor and (game_pace_pass or model_edge_pass):
+        # KISS Filter: Home Batter Hits >= 8.0 AND Away Batter Hits >= 8.0 (Nothing else considered)
+        if (game_dict['away_hits'] >= 8.00) and (game_dict['home_hits'] >= 8.00):
             kiss_game = game_dict.copy()
             kiss_game['target_rec'] = "Dual Team Stack"
             kiss_targets.append(kiss_game)
