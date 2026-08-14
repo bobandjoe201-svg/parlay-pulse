@@ -10,13 +10,15 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.clock import Clock
+from kivy.utils import platform
 from kivy.core.window import Window
 
 # Import our backend calculation module
 import hits_engine
 
-# Set mobile portrait preview size for desktop testing
-Window.size = (412, 732)
+# Only apply a fixed window size on desktop computers (Windows/Mac/Linux)
+if platform not in ('android', 'ios'):
+    Window.size = (450, 750)
 
 
 class HitsApp(App):
